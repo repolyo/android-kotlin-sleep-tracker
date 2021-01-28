@@ -79,8 +79,8 @@ class SleepTrackerFragment : Fragment() {
             }
         })
 
-        var adapter = SleepNightAdapter(SleepNightAdapter.SleepNightListener { nightId ->
-            Toast.makeText(context, "${nightId}", Toast.LENGTH_LONG).show()
+        var adapter = SleepNightAdapter(SleepNightAdapter.SleepNightListener {
+            sleep ->  sleepTrackerViewModel.onSleepNightClicked(sleep)
         })
         binding.sleepList.adapter = adapter
 
@@ -89,6 +89,14 @@ class SleepTrackerFragment : Fragment() {
         sleepTrackerViewModel.nights.observe(this.viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+            }
+        })
+
+        sleepTrackerViewModel.navigateToSleepDataQuality.observe(this, Observer {night ->
+            night?.let {
+                this.findNavController().navigate(SleepTrackerFragmentDirections
+                        .actionSleepTrackerFragmentToSleepDetailFragment(night.nightId, night.sleepQuality))
+                sleepTrackerViewModel.onSleepDataQualityNavigated()
             }
         })
 

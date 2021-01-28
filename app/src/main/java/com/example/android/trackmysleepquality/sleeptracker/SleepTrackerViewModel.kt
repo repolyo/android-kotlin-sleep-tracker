@@ -132,5 +132,17 @@ class SleepTrackerViewModel(
     fun doneShowingSnackbar() {
         _showSnackbarEvent.value = false
     }
+
+    private var _navigateToSleepDataQuality = MutableLiveData<SleepNight>()
+    val navigateToSleepDataQuality: LiveData<SleepNight> get() = _navigateToSleepDataQuality
+
+    fun onSleepNightClicked(night: SleepNight){
+        _navigateToSleepDataQuality.value = night
+    }
+
+    fun onSleepDataQualityNavigated() {
+        _navigateToSleepDataQuality.value = null
+    }
+
 }
 
